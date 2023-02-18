@@ -18,6 +18,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     const allPost = client.db('social-site').collection('allPost');
     const aboutDetailsData = client.db('social-site').collection('aboutDetails');
+    const commentDataBase = client.db('social-site').collection('comments');
 
     try {
 
@@ -85,6 +86,21 @@ async function run() {
             const result = await aboutDetailsData.updateOne(filter, updateData, option);
             res.send(result);
         });
+
+        app.post('/allComment', async (req, res) => {
+            const data = req.body;
+            console.log();
+            const result = await commentDataBase.insertOne(data);
+            res.send(result)
+        });
+
+        app.get('/allComment', async (req, res) => {
+            const data = {};
+            const result = await commentDataBase.find(data).toArray();
+            res.send(result);
+        });
+
+
 
 
 
